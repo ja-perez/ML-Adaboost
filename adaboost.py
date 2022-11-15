@@ -68,12 +68,13 @@ def adaboost_train(X, Y, max_iter):
 def adaboost_test(X, Y, f, alpha):
     votes = [0 for _ in X]
     for i, classifier in enumerate(f):
-        vote = classifier.predict(X)
-        weighted_vote = alpha[i] * vote
+        vote = classifier.predict(X)                    # Prediction of decision tree f(i) on data set X
+        weighted_vote = alpha[i] * vote                 # Applying weight(alpha) to f(i) prediction
         for j, _ in enumerate(votes):
-            votes[j] += weighted_vote[j]
-    votes = [1 if vote > 0 else -1 for vote in votes]
+            votes[j] += weighted_vote[j]                # Taking sum of each data points index to calculate sign
+    votes = [1 if vote > 0 else -1 for vote in votes]   # Calculating prediction of each data point using signs
     outcomes = []
     for i, vote in enumerate(votes):
-        outcomes.append(1 if vote == Y[i] else 0)
-    return sum(outcomes) * 1.0 / len(outcomes)
+        outcomes.append(1 if vote == Y[i] else 0)       # Calculating amount of correct predictions against Y values
+    return sum(outcomes) * 1.0 / len(outcomes)          # Calculating accuracy of predictions using number of correct
+                                                        # predictions / total predictions
